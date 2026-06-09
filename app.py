@@ -99,3 +99,21 @@ if __name__ == "__main__":
     app.run(debug=True, port=3000)
 else:
     _cargar_juegos_desde_api(app)
+#         como crear el entorno virtual
+# python -m venv proyecto
+#      activar entorno virtual
+# \proyecto\Scripts\Activate
+#      desactivar entorno virtual
+# deactivate
+#        comandos para guarad cambios al githud
+# git status
+# git add .
+# git commit -m "Actualizar Swagger y limpiar archivos de despliegue"
+# git push origin main
+
+#        como instalar dependencias
+# pip install -r requirements.txt  
+#        como crear el archivo requirements.txt
+# pip freeze > requirements.txt
+ 
+ #pip install Flask flasgger requests
