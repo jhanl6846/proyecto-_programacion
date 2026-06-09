@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Agregar Juego{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">AGREGAR JUEGO</h1>
+  <a href="{{ url_for('juegos.catalogo') }}" class="btn-secondary">← Catálogo</a>
+</div>
+<div class="form-container">
+  <form method="POST" action="{{ url_for('admin.nuevo_juego') }}">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Título *</label>
+        <input type="text" name="title" placeholder="Nombre del juego" required>
+      </div>
+      <div class="form-group">
+        <label>Género</label>
+        <input type="text" name="genre" placeholder="Ej: shooter, rpg, strategy">
+      </div>
+      <div class="form-group">
+        <label>Plataforma</label>
+        <input type="text" name="platform" placeholder="Ej: PC, browser">
+      </div>
+      <div class="form-group">
+        <label>Editorial / Publisher</label>
+        <input type="text" name="publisher" placeholder="Ej: Ubisoft">
+      </div>
+      <div class="form-group">
+        <label>Desarrollador</label>
+        <input type="text" name="developer" placeholder="Ej: Studio Name">
+      </div>
+      <div class="form-group">
+        <label>Fecha de lanzamiento</label>
+        <input type="text" name="release_date" placeholder="Ej: 2024-01-15">
+      </div>
+      <div class="form-group">
+        <label>Precio (COP) *</label>
+        <input type="number" name="precio" min="0" step="100" placeholder="Ej: 45000" required>
+      </div>
+      <div class="form-group">
+        <label>Stock inicial *</label>
+        <input type="number" name="stock" min="0" value="5" required>
+      </div>
+      <div class="form-group">
+        <label>Calificación (1–10)</label>
+        <input type="number" name="calificacion" min="1" max="10" step="0.1" value="7.0">
+      </div>
+      <div class="form-group">
+        <label>URL de imagen (thumbnail)</label>
+        <input type="url" name="thumbnail" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>URL del juego</label>
+        <input type="url" name="game_url" placeholder="https://...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Descripción corta</label>
+      <textarea name="short_description" rows="3" placeholder="Breve descripción del juego..."></textarea>
+    </div>
+    <button type="submit" class="btn-primary btn-full">Agregar al Catálogo</button>
+  </form>
+</div>
+{% endblock %}

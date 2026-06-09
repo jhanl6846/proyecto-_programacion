@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Catálogo — La Gran Rebaja{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">CATÁLOGO DE JUEGOS</h1>
+</div>
+
+<form method="GET" class="filter-bar">
+  <input type="text" name="q" value="{{ q }}" placeholder="Buscar juego..." class="search-input">
+  <select name="genero">
+    <option value="">Todos los géneros</option>
+    {% for g in generos %}
+    <option value="{{ g }}" {% if g == genero %}selected{% endif %}>{{ g }}</option>
+    {% endfor %}
+  </select>
+  <select name="plataforma">
+    <option value="">Todas las plataformas</option>
+    {% for p in plataformas %}
+    <option value="{{ p }}" {% if p == plataforma %}selected{% endif %}>{{ p }}</option>
+    {% endfor %}
+  </select>
+  <select name="editorial">
+    <option value="">Todas las editoriales</option>
+    {% for e in editoriales %}
+    <option value="{{ e }}" {% if e == editorial %}selected{% endif %}>{{ e }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit" class="btn-primary">Filtrar</button>
+  <a href="{{ url_for('juegos.catalogo') }}" class="btn-secondary">Limpiar</a>
+</form>
+
+<div class="juegos-grid">
+  {% for j in juegos %}
+  <a href="{{ url_for('juegos.detalle', juego_id=j.id) }}" class="juego-card">
+    <div class="juego-thumb">
+      <img src="{{ j.thumbnail }}" alt="{{ j.title }}" loading="lazy" onerror="this.src='/static/img/placeholder.png'">
+    </div>
+    <div class="juego-info">
+      <div class="juego-title">{{ j.title }}</div>
+      <div class="juego-meta">
+        <span class="badge-genre">{{ j.genre }}</span>
+        <span class="badge-platform">{{ j.platform }}</span>
+      </div>
+      <div class="juego-footer">
+        <span class="juego-precio">${{ "{:,.0f}".format(j.precio) }}</span>
+        <span class="juego-rating">⭐ {{ "%.1f"|format(j.calificacion) }}</span>
+        <span class="juego-stock {% if j.stock == 0 %}sin-stock{% endif %}">
+          {% if j.stock > 0 %}{{ j.stock }} uds{% else %}Agotado{% endif %}
+        </span>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+  {% if not juegos %}
+  <p class="empty-msg">No se encontraron juegos con ese filtro.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Mejor Calificados{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">⭐ TOP 20 JUEGOS</h1>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr><th>#</th><th>Título</th><th>Género</th><th>Plataforma</th><th>Calificación</th><th>Precio</th><th>Stock</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for j in juegos %}
+      <tr>
+        <td><strong>{{ loop.index }}</strong></td>
+        <td>{{ j.title }}</td>
+        <td><span class="badge-genre">{{ j.genre }}</span></td>
+        <td><span class="badge-platform">{{ j.platform }}</span></td>
+        <td class="rating-col">⭐ {{ "%.1f"|format(j.calificacion) }}</td>
+        <td>${{ "{:,.0f}".format(j.precio) }}</td>
+        <td>{{ j.stock }}</td>
+        <td><a href="{{ url_for('juegos.detalle', juego_id=j.id) }}" class="btn-sm">Ver</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

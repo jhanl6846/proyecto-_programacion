@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Administrador{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">ADMINISTRADOR</h1>
+  <p class="page-sub">Bienvenido, <strong>{{ session.empleado_nombre }}</strong></p>
+</div>
+
+<div class="stats-grid">
+  <a href="{{ url_for('juegos.catalogo') }}" class="stat-card">
+    <div class="stat-icon">&#127918;</div>
+    <div class="stat-value">{{ total_juegos }}</div>
+    <div class="stat-label">Juegos en catalogo</div>
+  </a>
+  <a href="{{ url_for('admin.lista_empleados') }}" class="stat-card">
+    <div class="stat-icon">&#128101;</div>
+    <div class="stat-value">{{ total_empleados }}</div>
+    <div class="stat-label">Empleados</div>
+  </a>
+  <a href="{{ url_for('admin.lista_clientes') }}" class="stat-card">
+    <div class="stat-icon">&#128100;</div>
+    <div class="stat-value">{{ total_clientes }}</div>
+    <div class="stat-label">Clientes registrados</div>
+  </a>
+  <a href="{{ url_for('admin.registro_ventas') }}" class="stat-card highlight">
+    <div class="stat-icon">&#128176;</div>
+    <div class="stat-value">${{ "{:,.0f}".format(ingresos) }}</div>
+    <div class="stat-label">Ingresos totales ({{ total_ventas }} ventas)</div>
+  </a>
+</div>
+
+<div class="action-grid">
+  <a href="{{ url_for('admin.nuevo_empleado') }}" class="action-card">
+    <span class="action-icon">&#10133;</span>
+    <span>Nuevo Empleado</span>
+  </a>
+  <a href="{{ url_for('admin.nuevo_cliente') }}" class="action-card">
+    <span class="action-icon">&#10133;</span>
+    <span>Nuevo Cliente</span>
+  </a>
+  <a href="{{ url_for('admin.nuevo_juego') }}" class="action-card">
+    <span class="action-icon">&#10133;</span>
+    <span>Agregar Juego</span>
+  </a>
+  <a href="{{ url_for('admin.descuentos') }}" class="action-card">
+    <span class="action-icon">&#127991;</span>
+    <span>Aplicar Descuentos</span>
+  </a>
+  <a href="{{ url_for('juegos.mejor_calificados') }}" class="action-card">
+    <span class="action-icon">&#11088;</span>
+    <span>Mejor Calificados</span>
+  </a>
+  <a href="{{ url_for('juegos.valor_inventario') }}" class="action-card">
+    <span class="action-icon">&#128230;</span>
+    <span>Inventario</span>
+  </a>
+  <a href="{{ url_for('admin.registro_ventas') }}" class="action-card">
+    <span class="action-icon">&#128203;</span>
+    <span>Registro de Ventas</span>
+  </a>
+</div>
+{% endblock %}

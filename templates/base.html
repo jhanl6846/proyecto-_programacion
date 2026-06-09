@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}La Gran Rebaja{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+
+{% if session.empleado_id %}
+<button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<div class="side-overlay"></div>
+
+<aside class="side-menu" aria-hidden="true">
+  <div class="side-header">
+    <div class="nav-brand">
+      <span class="brand-icon">GAME</span>
+      <span class="brand-name">LA GRAN REBAJA</span>
+    </div>
+    <button class="side-close" type="button" aria-label="Cerrar menu">x</button>
+  </div>
+
+  <div class="side-user">
+    <span class="user-badge {{ session.empleado_rango }}">{{ session.empleado_rango }}</span>
+    <span class="user-name">{{ session.empleado_nombre }}</span>
+  </div>
+
+  <nav class="side-links">
+    {% if session.empleado_rango == 'administrador' %}
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-link">Inicio</a>
+      <a href="{{ url_for('admin.lista_empleados') }}" class="nav-link">Empleados</a>
+      <a href="{{ url_for('admin.lista_clientes') }}" class="nav-link">Clientes</a>
+      <a href="{{ url_for('admin.registro_ventas') }}" class="nav-link">Ventas</a>
+      <a href="{{ url_for('admin.descuentos') }}" class="nav-link">Descuentos</a>
+      <a href="{{ url_for('admin.nuevo_juego') }}" class="nav-link">Agregar juego</a>
+    {% else %}
+      <a href="{{ url_for('vendedor.dashboard') }}" class="nav-link">Inicio</a>
+      <a href="{{ url_for('vendedor.lista_clientes') }}" class="nav-link">Clientes</a>
+      <a href="{{ url_for('vendedor.nuevo_cliente') }}" class="nav-link">Nuevo cliente</a>
+      <a href="{{ url_for('vendedor.mis_ventas') }}" class="nav-link">Mis ventas</a>
+    {% endif %}
+    <a href="{{ url_for('juegos.catalogo') }}" class="nav-link">Catalogo</a>
+    <a href="{{ url_for('juegos.mejor_calificados') }}" class="nav-link">Top Juegos</a>
+    <a href="{{ url_for('juegos.valor_inventario') }}" class="nav-link">Inventario</a>
+    <a href="{{ url_for('auth.logout') }}" class="btn-logout">Salir</a>
+  </nav>
+</aside>
+{% endif %}
+
+<main class="main-content">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for cat, msg in messages %}
+          <div class="flash flash-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

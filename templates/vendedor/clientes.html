@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Clientes{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">CLIENTES</h1>
+  <a href="{{ url_for('vendedor.nuevo_cliente') }}" class="btn-primary">+ Nuevo Cliente</a>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr><th>ID</th><th>Nombre</th><th>Edad</th><th>Cédula</th><th>Teléfono</th><th>Dirección</th></tr>
+    </thead>
+    <tbody>
+      {% for c in clientes %}
+      <tr>
+        <td><span class="badge">{{ c.id }}</span></td>
+        <td>{{ c.nombre }}</td>
+        <td>{{ c.edad }}</td>
+        <td>{{ c.cedula }}</td>
+        <td>{{ c.telefono }}</td>
+        <td>{{ c.direccion }}</td>
+      </tr>
+      {% endfor %}
+      {% if not clientes %}
+      <tr><td colspan="6" class="empty-row">No hay clientes registrados.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

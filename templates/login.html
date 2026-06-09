@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — La Gran Rebaja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body class="login-page">
+
+<div class="login-bg">
+  <div class="grid-overlay"></div>
+</div>
+
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">🎮</div>
+      <h1 class="logo-title">LA GRAN REBAJA</h1>
+      <p class="logo-sub">TIENDA DE VIDEOJUEGOS</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash flash-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
+      <div class="form-group">
+        <label for="id">ID de Empleado</label>
+        <input type="text" id="id" name="id" placeholder="Ej: E001" autocomplete="off" required>
+      </div>
+      <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="••••••" required>
+      </div>
+      <button type="submit" class="btn-primary btn-full">
+        <span>INGRESAR</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </form>
+
+    <p class="login-hint">Demo: ID <strong>E001</strong> / Contraseña <strong>123456</strong></p>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

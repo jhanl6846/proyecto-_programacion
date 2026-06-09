@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Registro de Ventas{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">REGISTRO DE VENTAS</h1>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr><th>#</th><th>Cliente</th><th>Juego</th><th>Cant.</th><th>Precio Unit.</th><th>Total</th><th>Vendedor</th><th>Fecha</th></tr>
+    </thead>
+    <tbody>
+      {% for v in ventas %}
+      <tr>
+        <td>{{ v.id }}</td>
+        <td>{{ v.cliente_nombre }} <span class="badge">{{ v.cliente_id }}</span></td>
+        <td>{{ v.juego_nombre }}</td>
+        <td>{{ v.cantidad }}</td>
+        <td>${{ "{:,.2f}".format(v.precio_unitario) }}</td>
+        <td class="total-col">${{ "{:,.2f}".format(v.total) }}</td>
+        <td>{{ v.vendedor }}</td>
+        <td>{{ v.fecha }}</td>
+      </tr>
+      {% endfor %}
+      {% if not ventas %}
+      <tr><td colspan="8" class="empty-row">No hay ventas registradas.</td></tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

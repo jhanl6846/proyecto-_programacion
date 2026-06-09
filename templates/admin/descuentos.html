@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Descuentos Masivos{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">DESCUENTOS MASIVOS</h1>
+</div>
+<div class="form-card">
+  <form method="POST">
+    <div class="form-group">
+      <label>Aplicar descuento por</label>
+      <select name="tipo" id="tipo-select" onchange="actualizarOpciones()">
+        <option value="genero">Género</option>
+        <option value="plataforma">Plataforma</option>
+        <option value="editorial">Editorial</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Valor</label>
+      <select name="valor" id="valor-select"></select>
+    </div>
+    <div class="form-group">
+      <label>Porcentaje de descuento (%)</label>
+      <input type="number" name="porcentaje" min="1" max="99" placeholder="Ej: 20" required>
+    </div>
+    <button type="submit" class="btn-primary btn-full">APLICAR DESCUENTO</button>
+  </form>
+</div>
+
+<script>
+const datos = {
+  genero: {{ generos | tojson }},
+  plataforma: {{ plataformas | tojson }},
+  editorial: {{ editoriales | tojson }}
+};
+function actualizarOpciones() {
+  const tipo = document.getElementById("tipo-select").value;
+  const sel = document.getElementById("valor-select");
+  sel.innerHTML = "";
+  (datos[tipo] || []).forEach(v => {
+    const o = document.createElement("option");
+    o.value = v; o.textContent = v;
+    sel.appendChild(o);
+  });
+}
+actualizarOpciones();
+</script>
+{% endblock %}

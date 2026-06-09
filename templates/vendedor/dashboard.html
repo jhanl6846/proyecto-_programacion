@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Panel Vendedor{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">PANEL DE VENDEDOR</h1>
+  <p class="page-sub">Bienvenido, <strong>{{ session.empleado_nombre }}</strong></p>
+</div>
+
+<div class="stats-grid">
+  <a href="{{ url_for('juegos.catalogo') }}" class="stat-card">
+    <div class="stat-icon">&#127918;</div>
+    <div class="stat-value">{{ total_juegos }}</div>
+    <div class="stat-label">Juegos en catalogo</div>
+  </a>
+  <a href="{{ url_for('vendedor.lista_clientes') }}" class="stat-card">
+    <div class="stat-icon">&#128100;</div>
+    <div class="stat-value">{{ total_clientes }}</div>
+    <div class="stat-label">Clientes registrados</div>
+  </a>
+  <a href="{{ url_for('vendedor.mis_ventas') }}" class="stat-card highlight">
+    <div class="stat-icon">&#128176;</div>
+    <div class="stat-value">{{ mis_ventas }}</div>
+    <div class="stat-label">Mis ventas</div>
+  </a>
+</div>
+
+<div class="action-grid">
+  <a href="{{ url_for('vendedor.nuevo_cliente') }}" class="action-card">
+    <span class="action-icon">&#10133;</span>
+    <span>Nuevo Cliente</span>
+  </a>
+  <a href="{{ url_for('vendedor.lista_clientes') }}" class="action-card">
+    <span class="action-icon">&#128100;</span>
+    <span>Ver Clientes</span>
+  </a>
+  <a href="{{ url_for('juegos.mejor_calificados') }}" class="action-card">
+    <span class="action-icon">&#11088;</span>
+    <span>Mejor Calificados</span>
+  </a>
+  <a href="{{ url_for('juegos.valor_inventario') }}" class="action-card">
+    <span class="action-icon">&#128230;</span>
+    <span>Inventario</span>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Valor de Inventario{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">VALOR DE INVENTARIO</h1>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card highlight">
+    <div class="stat-icon">💰</div>
+    <div class="stat-value">${{ "{:,.0f}".format(total) }}</div>
+    <div class="stat-label">Valor total del inventario</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🎮</div>
+    <div class="stat-value">{{ cantidad }}</div>
+    <div class="stat-label">Títulos en catálogo</div>
+  </div>
+</div>
+
+<h2 class="section-title">Top 20 por precio</h2>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr><th>Título</th><th>Precio</th><th>Stock</th><th>Valor total</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for j in juegos %}
+      <tr>
+        <td>{{ j.title }}</td>
+        <td>${{ "{:,.2f}".format(j.precio) }}</td>
+        <td>{{ j.stock }}</td>
+        <td class="total-col">${{ "{:,.2f}".format(j.precio * j.stock) }}</td>
+        <td><a href="{{ url_for('juegos.detalle', juego_id=j.id) }}" class="btn-sm">Ver</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

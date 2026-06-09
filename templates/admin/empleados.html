@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Empleados{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1 class="page-title">EMPLEADOS</h1>
+  <a href="{{ url_for('admin.nuevo_empleado') }}" class="btn-primary">+ Nuevo Empleado</a>
+</div>
+<div class="table-container">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th><th>Nombre</th><th>Rango</th><th>Edad</th><th>Cédula</th><th>Teléfono</th><th>Dirección</th><th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in empleados %}
+      <tr>
+        <td><span class="badge">{{ e.id }}</span></td>
+        <td>{{ e.nombre }}</td>
+        <td><span class="badge {{ e.rango }}">{{ e.rango }}</span></td>
+        <td>{{ e.edad }}</td>
+        <td>{{ e.cedula }}</td>
+        <td>{{ e.telefono }}</td>
+        <td>{{ e.direccion }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('admin.eliminar_empleado', emp_id=e.id) }}"
+                onsubmit="return confirm('¿Eliminar al empleado {{ e.nombre }}?')">
+            <button type="submit" class="btn-danger btn-sm">Eliminar</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
