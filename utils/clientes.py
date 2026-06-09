@@ -24,6 +24,39 @@ def siguiente_cliente_id(conn):
     return f"C{(max_id or 0) + 1:03}"
 
 
+def buscar_cliente_por_cedula(conn, cedula):
+    return conn.execute(
+        "SELECT * FROM clientes WHERE cedula = ?",
+        (cedula,),
+    ).fetchone()
+
+
+def buscar_empleado_por_cedula(conn, cedula):
+    return conn.execute(
+        "SELECT * FROM empleados WHERE cedula = ?",
+        (cedula,),
+    ).fetchone()
+
+
+def datos_cliente_desde_empleado(empleado, cedula):
+    if not empleado:
+        return {
+            "cedula": cedula,
+            "nombre": "",
+            "edad": "",
+            "direccion": "",
+            "telefono": "",
+        }
+
+    return {
+        "cedula": cedula,
+        "nombre": empleado["nombre"] or "",
+        "edad": empleado["edad"] or "",
+        "direccion": empleado["direccion"] or "",
+        "telefono": empleado["telefono"] or "",
+    }
+
+
 def asegurar_cliente_anonimo(conn):
     existe = conn.execute(
         "SELECT id FROM clientes WHERE id = ?",

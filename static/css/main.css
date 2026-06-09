@@ -534,6 +534,16 @@ select option { background: var(--bg3); }
   margin-top: 10px;
 }
 
+.lookup-form {
+  margin-bottom: 0;
+}
+
+.form-note {
+  color: var(--text2);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
 .accion-peligro {
   border: 1px solid rgba(231, 76, 60, 0.35) !important;
 }

@@ -8,33 +8,50 @@
 </div>
 
 <div class="form-card">
+  <form method="GET" class="lookup-form">
+    <input type="hidden" name="next" value="{{ next_url }}">
+    <div class="form-group">
+      <label>Cedula</label>
+      <input type="number" name="cedula" value="{{ datos_cliente.cedula if datos_cliente else request.args.get('cedula', '') }}" required autofocus>
+    </div>
+    <button type="submit" class="btn-primary btn-full">Consultar cedula</button>
+  </form>
+</div>
+
+{% if cliente_existente %}
+<div class="form-card form-note">
+  <p>La cedula consultada ya esta registrada como cliente: <strong>{{ cliente_existente.nombre }}</strong> ({{ cliente_existente.id }}).</p>
+</div>
+{% elif datos_cliente %}
+<div class="form-card">
+  {% if empleado_encontrado %}
+  <p class="form-note">Esta cedula pertenece a un empleado. Sus datos fueron cargados automaticamente.</p>
+  {% endif %}
   <form method="POST">
     <input type="hidden" name="next" value="{{ next_url }}">
+    <input type="hidden" name="cedula" value="{{ datos_cliente.cedula }}">
     <div class="form-row">
       <div class="form-group">
         <label>Nombre</label>
-        <input type="text" name="nombre" required>
+        <input type="text" name="nombre" value="{{ datos_cliente.nombre }}" required>
       </div>
       <div class="form-group">
         <label>Edad</label>
-        <input type="number" name="edad" min="10" max="99" required>
+        <input type="number" name="edad" min="10" max="99" value="{{ datos_cliente.edad }}" required>
       </div>
-    </div>
-    <div class="form-group">
-      <label>Cedula</label>
-      <input type="number" name="cedula" required>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label>Direccion (opcional)</label>
-        <input type="text" name="direccion" placeholder="Se genera automaticamente">
+        <input type="text" name="direccion" value="{{ datos_cliente.direccion }}" placeholder="Se genera automaticamente">
       </div>
       <div class="form-group">
         <label>Telefono (opcional)</label>
-        <input type="text" name="telefono" placeholder="Se genera automaticamente">
+        <input type="text" name="telefono" value="{{ datos_cliente.telefono }}" placeholder="Se genera automaticamente">
       </div>
     </div>
     <button type="submit" class="btn-primary btn-full">REGISTRAR CLIENTE</button>
   </form>
 </div>
+{% endif %}
 {% endblock %}

@@ -4,7 +4,14 @@
 import random
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from models.database import get_db
-from utils.clientes import contar_clientes_registrados, listar_clientes_registrados, siguiente_cliente_id
+from utils.clientes import (
+    buscar_cliente_por_cedula,
+    buscar_empleado_por_cedula,
+    contar_clientes_registrados,
+    datos_cliente_desde_empleado,
+    listar_clientes_registrados,
+    siguiente_cliente_id,
+)
 from utils.decorators import requiere_login
 
 vendedor_bp = Blueprint("vendedor", __name__)
@@ -125,11 +132,26 @@ def nuevo_cliente():
     next_url = request.values.get("next") or url_for("vendedor.lista_clientes")
     if not next_url.startswith("/"):
         next_url = url_for("vendedor.lista_clientes")
+    cedula_consultada = request.values.get("cedula", "").strip()
+    empleado_encontrado = None
+    cliente_existente = None
+    datos_cliente = None
 
     if request.method == "POST":
         conn = get_db()
-        nuevo_id = siguiente_cliente_id(conn)
         try:
+            cedula = int(request.form["cedula"])
+            cliente_existente = buscar_cliente_por_cedula(conn, cedula)
+            if cliente_existente:
+                flash(f"La cedula {cedula} ya esta registrada como cliente.", "error")
+                return redirect(url_for("vendedor.nuevo_cliente", cedula=cedula, next=next_url))
+
+            empleado_encontrado = buscar_empleado_por_cedula(conn, cedula)
+            nuevo_id = siguiente_cliente_id(conn)
+            nombre = request.form.get("nombre", "").strip().lower()
+            edad = request.form.get("edad", "").strip()
+            direccion = request.form.get("direccion", "").strip()
+            telefono = request.form.get("telefono", "").strip()
             conn.execute(
                 """
                 INSERT INTO clientes (id, nombre, edad, cedula, direccion, telefono)
@@ -137,13 +159,12 @@ def nuevo_cliente():
                 """,
                 (
                     nuevo_id,
-                    request.form["nombre"].lower(),
-                    int(request.form["edad"]),
-                    int(request.form["cedula"]),
-                    request.form.get("direccion") or
+                    nombre,
+                    int(edad),
+                    cedula,
+                    direccion or
                         f"carrera {random.randint(1, 100)} # {random.randint(1, 100)}-{random.randint(1, 100)}",
-                    request.form.get("telefono") or
-                        str(random.randint(3_000_000_000, 3_999_999_999)),
+                    telefono or str(random.randint(3_000_000_000, 3_999_999_999)),
                 ),
             )
             conn.commit()
@@ -154,4 +175,22 @@ def nuevo_cliente():
             conn.close()
         return redirect(next_url)
 
-    return render_template("vendedor/nuevo_cliente.html", next_url=next_url)
+    if cedula_consultada:
+        conn = get_db()
+        try:
+            cedula = int(cedula_consultada)
+            cliente_existente = buscar_cliente_por_cedula(conn, cedula)
+            empleado_encontrado = buscar_empleado_por_cedula(conn, cedula)
+            datos_cliente = datos_cliente_desde_empleado(empleado_encontrado, cedula)
+        except ValueError:
+            flash("La cedula debe ser numerica.", "error")
+        finally:
+            conn.close()
+
+    return render_template(
+        "vendedor/nuevo_cliente.html",
+        cliente_existente=cliente_existente,
+        datos_cliente=datos_cliente,
+        empleado_encontrado=empleado_encontrado,
+        next_url=next_url,
+    )
